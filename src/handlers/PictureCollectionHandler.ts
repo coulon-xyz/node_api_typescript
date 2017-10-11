@@ -12,7 +12,11 @@ export class PictureCollectionHandler {
      */
 
     buildPictureCollectionFromGetPictures = function(pictureCollection: Picture[], response: Object) {
-        console.log("Building a Picture Collection");
+
+        console.log("Raw Responses from Unspash: ");
+        console.log(response)
+
+        console.log("# Building a Picture Collection");
         for (let result of response['results']) {
           pictureCollection.push(new Picture(result["id"],result["width"],result["height"],result["urls"]["regular"],result["likes"]));
         }
@@ -32,22 +36,25 @@ export class PictureCollectionHandler {
      *
      * @param {Picture[]} pictureCollection
      * @param responses
-     * @param {String[]} filters
+     * @param {string[]} filters
      * @returns {Promise<any>}
      */
-    fillPictureCollectionWithAssets = function(pictureCollection: Picture[], responses: Object[],  filters: String[]): Promise<any> {
+    fillPictureCollectionWithAssets = function(pictureCollection: Picture[], responses: Object[],  filters: string[]): Promise<any> {
         console.log("Filling Picture Collection with assets from Google Vision");
         for (let i in responses) {
             // using a for let as we need to keep track of index (responses and pictureCollection have the same).
-            (responses[i]["responses"][0]["labelAnnotations"]).forEach(labelAnnotations=> {
-                // todo: Set the 0.8 as a configuration variable. Not cool to have number hanging out like that.
-                if (labelAnnotations["score"] > 0.8) {
-                    pictureCollection[i].addAvailableAsset(labelAnnotations["description"]);
-                    if (this.inArray(labelAnnotations["description"], filters)) {
-                        pictureCollection[i].addFilteredAsset(labelAnnotations["description"]);
+            if (responses[i]["responses"][0]["labelAnnotations"]) {
+                (responses[i]["responses"][0]["labelAnnotations"]).forEach(labelAnnotations => {
+                    console.log(labelAnnotations);
+                    // todo: Set the 0.8 as a configuration variable. Not cool to have number hanging out like that.
+                    if (labelAnnotations["score"] > 0.8) {
+                        pictureCollection[i].addAvailableAsset(labelAnnotations["description"]);
+                        if (this.inArray(labelAnnotations["description"], filters)) {
+                            pictureCollection[i].addFilteredAsset(labelAnnotations["description"]);
+                        }
                     }
-                }
-            });
+                });
+            }
           }
           return new Promise(function(resolve, reject) { 
             resolve()
@@ -62,6 +69,7 @@ export class PictureCollectionHandler {
      * @returns {Promise<any>}
      */
     buildJsonResponseFromPictureCollection = function(pictureCollection: Picture[]) {
+        console.log("## Build answer")
         // init placeholders
         let filteredCollectionPictures : Picture[] = [];
         let collectionPictures : Picture[] = [];
@@ -83,11 +91,11 @@ export class PictureCollectionHandler {
      *
      * Quick Helper to find a needle in a haystack.
      *
-     * @param {String} needle
-     * @param {String[]} haystack
+     * @param {string} needle
+     * @param {string[]} haystack
      * @returns {Boolean}
      */
-    public inArray(needle: String, haystack: String[]): Boolean {
+    public inArray(needle: string, haystack: string[]): Boolean {
         let length = haystack.length;
         for(let i = 0; i < length; i++) {
             if(haystack[i] == needle) {

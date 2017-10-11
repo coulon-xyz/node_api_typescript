@@ -39,11 +39,15 @@ export class CollectionRouter {
             // query string for filter and theme are set. we can process.
 
             // init vars & placeholders
-            let theme: String = req.query.theme;
+            let theme: string = req.query.theme;
             let pictureCollection: Picture[] = [];
-            let filters: String[] = [];
+            let filters: string[] = [];
+            let numberOfPictures: number = 5;
             if (req.query.filter) {
                 filters = req.query.filter.split(",");
+            }
+            if (req.query.numberOfPictures) {
+                numberOfPictures = req.query.numberOfPictures
             }
 
             // init services (todo: find a way to inject them in the class instead ?)
@@ -51,7 +55,7 @@ export class CollectionRouter {
             let visionService: VisionService = new VisionService();
             let pictureCollectionHelper = new PictureCollectionHandler();
 
-            unsplashService.getPictures(theme)
+            unsplashService.getPictures(theme, numberOfPictures)
                 .then(function (response: Object) {
                     return pictureCollectionHelper.buildPictureCollectionFromGetPictures(pictureCollection, response)
                 })

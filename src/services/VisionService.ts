@@ -11,12 +11,11 @@ export class VisionService {
      * @returns {Promise<any[]>}
      */
     getAssetForPictures(pictureCollection: Picture[]): Promise<any> {
-        console.log(pictureCollection)
-        //console.log("Getting assets for pictures (" + pictures.length + " pictures).")
-        var promises = []
+        console.log("## preparing requests to Vision");
+        let promises = []
         for (let picture of pictureCollection) {
             // Build body for Request
-            var reqBody = {
+            let reqBody = {
                 "requests": [
                     {
                         "image": {

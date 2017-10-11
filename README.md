@@ -18,7 +18,7 @@ $ git clone https://github.com/julienjcoulon/node_api_typescript.git
 $ cd node_api_typescript
 $ npm install
 ```
-Now, you need to create a .env file at the root of the project to specify you 'api keys' for Unsplash and Google Vision.
+Now, you need to create a .env file at the root of the project to specify your 'api keys' for Unsplash and Google Vision.
 
 ```sh
 $ touch .env
