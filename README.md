@@ -3,7 +3,7 @@
 ## Summary
 This API seek a collection of pictures on Unsplash API, and then filter them on "present assets on the picture" by using Google Vision API
 
-As this is a beta version, the number of pictures fetched from unsplash is hardcoded (10), and pagination is not implemented.
+As this is a beta version, the number of pictures fetched from unsplash is limited (no pagination).
 
 Example: Search a list of pictures with the theme City, and only get the ones that contains a car with a certitude of 80%.
 
@@ -42,4 +42,10 @@ You can test the installation with a regular browser:
 
 ```sh
 localhost:3000/collection/seek?theme=sahara&filter=dune,sand
+```
+
+By default, you will get the 5 first pictures of the first page from unsplash response, you can change that number with the query 'numberOfPictures'
+
+```sh
+localhost:3000/collection/seek?theme=mountain&filter=wilderness,winter&numberOfPictures=20
 ```

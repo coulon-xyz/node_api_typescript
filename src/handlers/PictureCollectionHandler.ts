@@ -54,6 +54,14 @@ export class PictureCollectionHandler {
                         }
                     }
                 });
+            } else {
+                if (responses[i]["responses"][0]['error']['message']) {
+                    console.error('Cloud Vision error with assets for picture ' + pictureCollection[i].pictureId)
+                    pictureCollection[i].setErrorMessage("Cloud Vision: " +  responses[i]["responses"][0]['error']['message'])
+                } else {
+                    console.error('Unknown error with assets for picture ' + pictureCollection[i].pictureId)
+                    pictureCollection[i].setErrorMessage("Unknown error with assets")
+                }
             }
           }
           return new Promise(function(resolve, reject) { 
