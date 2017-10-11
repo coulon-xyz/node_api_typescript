@@ -2,11 +2,19 @@ import * as rp from 'request-promise'
 import { Picture } from './../models/Picture';
 
 export class VisionService {
-    getAssetForPictures(pictures: Picture[]) {
-        console.log(pictures.length)
-        console.log("Getting assets for pictures (" + pictures.length + " pictures).")
+
+    /**
+     *
+     * Collect all assets for a Picture[]
+     *
+     * @param {Picture[]} pictureCollection
+     * @returns {Promise<any[]>}
+     */
+    getAssetForPictures(pictureCollection: Picture[]): Promise<any> {
+        console.log(pictureCollection)
+        //console.log("Getting assets for pictures (" + pictures.length + " pictures).")
         var promises = []
-        for (let picture of pictures) {
+        for (let picture of pictureCollection) {
             // Build body for Request
             var reqBody = {
                 "requests": [
@@ -25,13 +33,13 @@ export class VisionService {
                 ]
             };
 
-            var url = "https://vision.googleapis.com/v1/images:annotate?key=" + process.env.GOOGLE_VISION_API_KEY;
+            let url = "https://vision.googleapis.com/v1/images:annotate?key=" + process.env.GOOGLE_VISION_API_KEY;
             
-            var options = ({
-                "method":"POST",
-                "uri": url,
-                "body": reqBody, 
-                "json": true 
+            let options : rp.Options = ({
+                method:"POST",
+                uri: url,
+                body: reqBody,
+                json: true
                 });
             promises.push(rp(options))
         }

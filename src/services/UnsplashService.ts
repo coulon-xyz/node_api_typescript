@@ -1,19 +1,27 @@
 import * as rp from 'request-promise'
-import { Picture } from './../models/Picture';
 
 export class UnsplashService {
-    appId= process.env.UNSPLASH_API_KEY
     urlSearch: string = 'https://api.unsplash.com/search/photos';
+    appId: string = process.env.UNSPLASH_API_KEY
     perPage: number = 5;
 
-    public getPictures(theme: string) {
-        var url: string = this.urlSearch + "?client_id=" + this.appId + "&query=" + theme + "&per_page=" + this.perPage;
+    /**
+     *
+     * Get Pictures from Unsplash based on a given theme.
+     *
+     * @param {String} theme
+     * @returns {requestPromise.RequestPromise}
+     */
+    public getPictures(theme: String) {
+
+        // todo: Make this configurable
+        let url: string = this.urlSearch + "?client_id=" + this.appId + "&query=" + theme + "&per_page=" + this.perPage;
         console.log("Fetching pictures details from unsplash");
-        var options = ({
-                "method":"GET",
-                "uri": url,
-                "json": true 
-                });
+        let options = {
+                method:"GET",
+                json: true,
+                url: url,
+                };
         return rp(options)
     }
 
